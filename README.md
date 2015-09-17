@@ -7,4 +7,5 @@ Salary Management of Customer Service
     客服查看薪资记录
 
 ## 安装使用
+	导入数据库
   
