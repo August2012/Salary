@@ -53,7 +53,6 @@
 
     <script type="text/javascript" src="/public/js/jQuery-2.1.4.min.js"></script>
     <script type="text/javascript" src="/public/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="/public/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/public/js/jquery.validate.min.js"></script>
     <script type="text/javascript" src="/public/js/localization/messages_zh.min.js"></script>
     <script type="text/javascript" src="/public/js/spin.min.js"></script>
@@ -130,7 +129,7 @@
                         jQuery('.loginpage').unmask();
                         if(data.success) {
                             if(data.is_admin)
-                                window.location.href = '/Dashboard/index';
+                                window.location.href = '/Admin/index';
                             else
                                 window.location.href = '/Service/index';
                         }else{

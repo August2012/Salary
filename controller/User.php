@@ -36,7 +36,7 @@ class User {
 			$username = trim($data->username);
 			$password = trim($data->password);
 
-			if(self::$author['username'] == $username && self::$author['password'] == $password) {
+			if(self::$author['username'] == $username && self::$author['password'] == md5($password)) {
 				// login process, write the user data into session
 	            Session::init();
 	            Session::set('is_login', true);
@@ -44,11 +44,12 @@ class User {
 	            Session::set('admin_id', '10000000001');
 	            Session::set('admin_name', $username);
 
-				Flight::json(array('success' => true, 'msg' => '登录成功'));
+				Flight::json(array('success' => true, 'msg' => '登录成功', 'is_admin' => true));
 				die;
 			}
 
 			$db = Flight::get('db');
+			$password = md5($password);
 			$res = $db->get("admin", "*", array(
 				"AND" => array(
 					"OR" => array(
@@ -62,28 +63,46 @@ class User {
 			);
 
 			if($res) {
+				// 执行登录操作
+	            Session::init();
+	            Session::set('is_login', true);
+	            Session::set('is_admin', true);
+	            Session::set('admin_id', $res['admin_id']);
+	            Session::set('admin_name', $res['admin_name']);
+	            Session::set('admin_phone', $res['admin_phone']);
+	            Session::set('admin_email', $res['admin_email']);
 
-				if(md5($password) == $res['admin_password']) {
-					// 执行登录操作
-
-					// login process, write the user data into session
-		            Session::init();
-		            Session::set('is_login', true);
-		            Session::set('admin_id', $res['admin_id']);
-		            Session::set('admin_name', $res['admin_name']);
-		            Session::set('phone_mob', $res['phone_mob']);
-		            Session::set('group_id', $res['group_id']);
-
-					Flight::json(array('success' => true, 'msg' => '登录成功'));
-
-				}else{
-					Flight::json(array('success' => false, 'msg' => '用户密码不正确'));
-				}
-
-			}else{
-				Flight::json(array('success' => false, 'msg' => '找不到用户'));
+				Flight::json(array('success' => true, 'msg' => '登录成功', 'is_admin' => true));
+				die;
 			}
 
+			$res1 = $db->get("services", "*", array(
+				"AND" => array(
+					"OR" => array(
+						"ser_name" => $username, 
+						"ser_email" => $username, 
+						"ser_phone" => $username, 
+					),
+					"ser_pwd" => $password
+					)
+				)
+			);
+
+			if($res1) {
+				Session::init();
+	            Session::set('is_login', true);
+	            Session::set('is_admin', false);
+	            Session::set('ser_id', $res['ser_id']);
+	            Session::set('ser_name', $res['ser_name']);
+	            Session::set('ser_phone', $res['ser_phone']);
+	            Session::set('ser_email', $res['ser_email']);
+
+				Flight::json(array('success' => true, 'msg' => '登录成功', 'is_admin' => false));
+				die;
+			}
+
+			Flight::json(array('success' => true, 'msg' => '登录失败，请检查用户名密码'));
+			die;
 
 		}else{
 

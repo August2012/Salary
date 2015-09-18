@@ -35,15 +35,19 @@ Flight::map('render', function($template, $data = array(), $isall = true){
 		    $leftMenu = Flight::renderLeft();
 
 		    $_s = new stdClass();
-		    $_s->login_user = $_SESSION['admin_name'];
 		    $_s->cssHeader = $cssHeader;
 			$_s->jsHeader  = $jsHeader;
-			$_s->leftMenu   = $leftMenu;
+			$_s->leftMenu  = $leftMenu;
+			if(Session::get('is_admin')) {
+		    	$_s->admin_name = isset($_SESSION['admin_name'])?$_SESSION['admin_name']:'';
+				$_s->headerContent = VIEW_PATH.'/admin_header.tpl';
+			}else{
+		    	$_s->ser_name = isset($_SESSION['ser_name'])?$_SESSION['ser_name']:'';
+				$_s->headerContent = VIEW_PATH.'/service_header.tpl';
+			}
 			$_s->mainContentLink = $template;
-
-			// Socket Url & Port
-			$_s->websocket_url = Flight::get('WEBSOCKET_URL');
-			$_s->websocket_port = Flight::get('WEBSOCKET_PORT');
+			$_s->app = Flight::get('app');
+			$_s->act = Flight::get('act');
 
 			// 加载单个页面
 			if(!empty($data))
@@ -131,12 +135,15 @@ Flight::map('defaultassets', function($tag = 1) {
 
 	if($tag == 1) { // css
 		$html = '<link rel="stylesheet" href="/public/css/bootstrap.min.css" type="text/css" />
-		    <link rel="stylesheet" href="/public/css/font-awesome.min.css" type="text/css" />';
+		    <link rel="stylesheet" href="/public/css/font-awesome.min.css" type="text/css" />
+		    <link rel="stylesheet" href="/public/css/bootstrap-table.min.css" type="text/css" />
+		    <link rel="stylesheet" href="/public/css/main.css" type="text/css" />';
 	}else{
 		$html = '
 		<script type="text/javascript" src="/public/js/jQuery-2.1.4.min.js"></script>
 	    <script type="text/javascript" src="/public/js/bootstrap.min.js"></script>
-	    <script type="text/javascript" src="/public/js/bootstrap.min.js"></script>
+	    <script type="text/javascript" src="/public/js/bootstrap-table-all.min.js"></script>
+	    <script type="text/javascript" src="/public/js/bootstrap-table-locale-all.min.js"></script>
 	    <script type="text/javascript" src="/public/js/jquery.validate.min.js"></script>
 	    <script type="text/javascript" src="/public/js/localization/messages_zh.min.js"></script>
 	    <script type="text/javascript" src="/public/js/spin.min.js"></script>
