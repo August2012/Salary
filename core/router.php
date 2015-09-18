@@ -3,10 +3,10 @@
 Flight::route('*', array('Base', 'index'));
 
 Flight::route('/', function(){
-    Flight::redirect('/dashboard/admin');
+    Flight::redirect('/admin/index');
 });
 Flight::route('/backend/*', function(){
-    Flight::redirect('/dashboard/admin');
+    Flight::redirect('/admin/index');
 });
 
 // 运行action

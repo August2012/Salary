@@ -3,15 +3,15 @@
 return array(
 
 	'SITE_URL'      => 'http://www.ls.com',
-	'STATIC_URL'      => 'http://localhost:8085/files',
-	'WEB_URL'      => 'http://localhost:8080/qccode',
+	'STATIC_URL'      => 'http://localhost:8082/files',
+	'WEB_URL'      => 'http://localhost:8082/qccode',
 	'DB_TYPE'       => 'mysql',
 	'DB_ENCODING'   => 'utf8',
-	'DB_HOST'       => '10.49.0.137',
-	'DB_NAME'       => 'lk12349',
-	'DB_USER'       => 'lk12349',
+	'DB_HOST'       => 'localhost',
+	'DB_NAME'       => 'salary',
+	'DB_USER'       => 'root',
 	'DB_PORT'       => '3306',
-	'DB_PWD'        => '123456',
+	'DB_PWD'        => 'password',
 	
 	'CACHE_SERVER'  => 'memcache',
 	'MEMCACHE_HOST' => '127.0.0.1',
@@ -20,8 +20,6 @@ return array(
 	'REDIS_PORT'    => '6379',
 
 	// 本地访问webSocket
-	'WEBSOCKET_URL' => '10.49.3.141',
-	'WEBSOCKET_PORT' => '9001',
 	
 	'COOKIE_DOMAIN' => '.ls.com',
 	'COOKIE_PATH'   => '/',

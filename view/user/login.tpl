@@ -1,65 +1,155 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>登录 - 楼口12349</title>
-<link rel="stylesheet" href="/public/css/style.default.css" type="text/css" />
-<link rel="stylesheet" href="/public/css/plugins/jquery.loadmask.spin.css" type="text/css" />
-<!--[if IE 9]>
-    <link rel="stylesheet" media="screen" href="/public/css/style.ie9.css"/>
-<![endif]-->
-<!--[if IE 8]>
-    <link rel="stylesheet" media="screen" href="/public/css/style.ie8.css"/>
-<![endif]-->
-<!--[if lt IE 9]>
-    <script src="/public/js/plugins/css3-mediaqueries.js"></script>
-<![endif]-->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>登录 - 客服工资系统</title>
+    <link rel="stylesheet" href="/public/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="/public/css/login.css" type="text/css" />
+    <!--[if lt IE 9]>
+    <script src="/public/js/html5shiv.min.js"></script>
+    <script src="/public/js/respond.min.js"></script>
+    <![endif]-->
 </head>
 
 <body class="loginpage">
-    <div class="loginbox">
-        <div class="loginboxinner">
-            
-            <div class="logo">
-                <h1 class="logo">楼口<span>12349</span></h1>
-                <span class="slogan">后台管理系统</span>
-            </div><!--logo-->
-            
-            <br clear="all" /><br />
-            
-            <div class="nousername">
-                <div class="loginmsg">请填写用户名.</div>
-            </div><!--nousername-->
-            
-            <div class="username">
-                <div class="usernameinner">
-                    <input type="text" name="username" id="username" />
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="wrap wrap1" style="display:none;">
+                    <p class="form-title">忘记密码</p>
+                    <form id="form1" action="" class="login">
+                        <input type="tel" placeholder="手机号码" name="phone"/>
+                        <a href="" class="btn btn-info btn-sm">发送验证码</a>
+                        <input type="tel" placeholder="手机验证码" name="phone_code"/>
+                        <a href="javascript:void(0);" id="change_btn" class="btn btn-primary btn-sm btn-login" >提交</a>
+                        <div class="remember-forgot">
+                            <div class="row">
+                                <div class="col-md-12  text-right">
+                                    <a href="javascript:void(0);" class="forgot-pass" id="back_login">返回登录</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="wrap wrap2">
+                    <p class="form-title">客服薪资管理</p>
+                    <form id="form2" class="login">
+                        <input type="text" placeholder="用户名/手机号码" name="username" />
+                        <input type="password" placeholder="密码" name="password" />
+                        <a href="javascript:void(0);" class="btn btn-primary btn-sm btn-login" id="login_btn">登录</a>
+                        <div class="remember-forgot">
+                            <div class="row">
+                                <div class="col-md-12  text-right">
+                                    <a href="javascript:void(0);" class="forgot-pass" id="forget_btn">忘记密码</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
-            
-            <div class="password">
-                <div class="passwordinner">
-                    <input type="password" name="password" id="password" />
-                </div>
-            </div>  
-            
-            <button id="login_btn">登录</button>
-            
-            <div class="keep"><input type="checkbox" name="remember_me" id="remember_me"/> 记住密码</div>
-            
-            
-        </div><!--loginboxinner-->
-    </div><!--loginbox-->
+        </div>
+    </div>
 
-    <script type="text/javascript" src="/public/js/plugins/jquery-1.7.min.js"></script>
-    <script type="text/javascript" src="/public/js/plugins/jquery-ui-1.8.16.custom.min.js"></script>
-    <script type="text/javascript" src="/public/js/plugins/jquery.cookie.js"></script>
-    <script type="text/javascript" src="/public/js/plugins/jquery.uniform.min.js"></script>
-    <script type="text/javascript" src="/public/js/plugins/spin.min.js"></script>
-    <script type="text/javascript" src="/public/js/plugins/jquery.loadmask.spin.js"></script>
-    <script type="text/javascript" src="/public/js/custom/general.js"></script>
-    <script type="text/javascript" src="/public/js/custom/login.js"></script>
+    <script type="text/javascript" src="/public/js/jQuery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="/public/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/public/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/public/js/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="/public/js/localization/messages_zh.min.js"></script>
+    <script type="text/javascript" src="/public/js/spin.min.js"></script>
+    <script type="text/javascript" src="/public/js/jquery.loadmask.spin.js"></script>
+    <script type="text/javascript" src="/public/js/bootstrap-notify.min.js"></script>
+    <script>
+         $(document).ready(function () {
+
+            $('#form1').validate({
+                rules: {
+                    phone: "required",
+                    phone_code: "required"
+                },
+                errorPlacement: function(error, element) {  
+                    element.after(error);
+                }
+            });
+
+            $('#form2').validate({
+                rules: {
+                    username: "required",
+                    password: "required"
+                },
+                errorPlacement: function(error, element) {  
+                    element.after(error);
+                }
+            });
+
+            $('#forget_btn').click(function(event) {
+                $('.wrap1').css('display', '');
+                $('.wrap2').css('display', 'none');
+            }); 
+
+            $('#back_login').click(function(event) {
+                $('.wrap2').css('display', '');
+                $('.wrap1').css('display', 'none');
+            }); 
+
+            $('#login_btn').click(function(event) {
+                
+                if($('#form2').valid()) {
+                    $('.loginpage').mask({
+                        spinner: { lines: 10, length: 5, width: 3, radius: 10}
+                    });
+                    $.post('/User/auth_login', $('#form2').serialize(), function(data, textStatus, xhr) {
+                        jQuery('.loginpage').unmask();
+                        if(data.success) {
+                            if(data.is_admin)
+                                window.location.href = '/Dashboard/index';
+                            else
+                                window.location.href = '/Service/index';
+                        }else{
+                            $.notify({
+                                title: '<strong>错误!</strong>',
+                                message: data.message
+                            },{
+                                type: 'danger',
+                                placement: {
+                                    from: "top",
+                                    align: "center"
+                                }
+                            });
+                        }
+                    }, 'json');
+                }
+            });
+
+            $('#change_btn').click(function(event) {
+                 if($('#form1').valid()) {
+                    $('.loginpage').mask({
+                        spinner: { lines: 10, length: 5, width: 3, radius: 10}
+                    });
+                    $.post('/User/auth_login', $('#form1').serialize(), function(data, textStatus, xhr) {
+                        jQuery('.loginpage').unmask();
+                        if(data.success) {
+                            if(data.is_admin)
+                                window.location.href = '/Dashboard/index';
+                            else
+                                window.location.href = '/Service/index';
+                        }else{
+                            $.notify({
+                                title: '<strong>错误!</strong>',
+                                message: data.message
+                            },{
+                                type: 'danger',
+                                placement: {
+                                    from: "top",
+                                    align: "center"
+                                }
+                            });
+                        }
+                    }, 'json');
+                }
+            });
+        });
+    </script>
 
 </body>
 </html>

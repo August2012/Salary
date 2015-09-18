@@ -130,20 +130,18 @@ Flight::map('printjs', function() {
 Flight::map('defaultassets', function($tag = 1) {
 
 	if($tag == 1) { // css
-		$html = '<link rel="stylesheet" href="/public/css/style.default.css" type="text/css" />
-		<link rel="stylesheet" href="/public/css/font-awesome.min.css" type="text/css" />';
+		$html = '<link rel="stylesheet" href="/public/css/bootstrap.min.css" type="text/css" />
+		    <link rel="stylesheet" href="/public/css/font-awesome.min.css" type="text/css" />';
 	}else{
 		$html = '
-		<script type="text/javascript" src="/public/js/plugins/jquery-1.7.min.js"></script>
-		<script type="text/javascript" src="/public/js/plugins/jquery-ui-1.8.16.custom.min.js"></script>
-		<script type="text/javascript" src="/public/js/plugins/jquery.datetimepicker.js"></script>
-		<script type="text/javascript" src="/public/js/plugins/jquery.cookie.js"></script>
-		<script type="text/javascript" src="/public/js/plugins/jquery.dataTables.min.js"></script>
-		<script type="text/javascript" src="/public/js/plugins/jquery.uniform.min.js"></script>
-		<script type="text/javascript" src="/public/js/plugins/jquery.slimscroll.js"></script>
-		<script type="text/javascript" src="/public/js/plugins/jquery.jgrowl.js"></script>
-		<script type="text/javascript" src="/public/js/plugins/jquery.alerts.js"></script>
-		<script type="text/javascript" src="/public/js/custom/general.js"></script>';
+		<script type="text/javascript" src="/public/js/jQuery-2.1.4.min.js"></script>
+	    <script type="text/javascript" src="/public/js/bootstrap.min.js"></script>
+	    <script type="text/javascript" src="/public/js/bootstrap.min.js"></script>
+	    <script type="text/javascript" src="/public/js/jquery.validate.min.js"></script>
+	    <script type="text/javascript" src="/public/js/localization/messages_zh.min.js"></script>
+	    <script type="text/javascript" src="/public/js/spin.min.js"></script>
+	    <script type="text/javascript" src="/public/js/jquery.loadmask.spin.js"></script>
+	    <script type="text/javascript" src="/public/js/bootstrap-notify.min.js"></script>';
 	}
 
 	return $html;

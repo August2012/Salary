@@ -34,17 +34,7 @@ define('CONF_PATH', dirname(__FILE__).'/conf');
 define('FILE_PATH', dirname(__FILE__).'/files');
 
 // start session
-ini_set('session.cookie_lifetime', 28800);
-ini_set('session.gc_maxlifetime', 28800);
-$lifeTime = 28800;
-session_set_cookie_params($lifeTime);
 Session::init();
-if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 28800)) {
-    // last request was more than 30 minutes ago
-    session_unset();     // unset $_SESSION variable for the run-time 
-    session_destroy();   // destroy session data in storage
-}
-$_SESSION['LAST_ACTIVITY'] = time(); // update last activity time stamp
 
 // 加载核心公用方法
 require CORE_PATH.'/core.php';
