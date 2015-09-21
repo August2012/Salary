@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50153
 File Encoding         : 65001
 
-Date: 2015-09-18 17:17:45
+Date: 2015-09-21 16:31:45
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -56,7 +56,7 @@ CREATE TABLE `services` (
   `ser_join` int(11) NOT NULL DEFAULT '0' COMMENT '加入时间',
   `is_use` tinyint(2) NOT NULL DEFAULT '1' COMMENT '1:启用0未启用',
   PRIMARY KEY (`ser_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for wages
@@ -70,6 +70,6 @@ CREATE TABLE `wages` (
   `end_date` date DEFAULT NULL,
   `detail` text COMMENT '详细描述',
   `admin_id` int(11) NOT NULL DEFAULT '0' COMMENT '添加人',
-  `add_time` int(11) NOT NULL DEFAULT '0' COMMENT '添加时间',
+  `add_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '添加时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

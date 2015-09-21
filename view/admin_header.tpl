@@ -20,10 +20,16 @@
                         客服管理
                     </a>
                 </li>
-                <li {if $_s->act eq 'index'}class="salary"{/if}>
+                <li {if $_s->act eq 'salary'}class="active"{/if}>
                     <a href="/admin/salary">
                         <span class="glyphicon glyphicon-calendar"></span>
                         薪资发放
+                    </a>
+                </li>
+                <li {if $_s->act eq 'admin_manage'}class="active"{/if}>
+                    <a href="/admin/admin_manage">
+                        <span class="glyphicon glyphicon-user"></span>
+                        管理员列表
                     </a>
                 </li>
             </ul>

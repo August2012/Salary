@@ -101,13 +101,13 @@
                         jQuery('.loginpage').unmask();
                         if(data.success) {
                             if(data.is_admin)
-                                window.location.href = '/Dashboard/index';
+                                window.location.href = '/Admin/index';
                             else
                                 window.location.href = '/Service/index';
                         }else{
                             $.notify({
                                 title: '<strong>错误!</strong>',
-                                message: data.message
+                                message: data.msg
                             },{
                                 type: 'danger',
                                 placement: {
@@ -125,7 +125,7 @@
                     $('.loginpage').mask({
                         spinner: { lines: 10, length: 5, width: 3, radius: 10}
                     });
-                    $.post('/User/auth_login', $('#form1').serialize(), function(data, textStatus, xhr) {
+                    $.post('/User/change_pwd', $('#form1').serialize(), function(data, textStatus, xhr) {
                         jQuery('.loginpage').unmask();
                         if(data.success) {
                             if(data.is_admin)
@@ -135,7 +135,7 @@
                         }else{
                             $.notify({
                                 title: '<strong>错误!</strong>',
-                                message: data.message
+                                message: data.msg
                             },{
                                 type: 'danger',
                                 placement: {

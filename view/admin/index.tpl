@@ -32,7 +32,7 @@
 							{/if}</td>
 						<td>
 							<a data-id="{$item.ser_id}" class="btn btn-primary" href="/admin/edit_service?ser_id={$item.ser_id}">修改</a>
-							&nbsp; | &nbsp;
+							&nbsp;
 							{if $item.is_use eq 1}
 								<a href="javascript:void(0);" data-id="{$item.ser_id}" class="btn btn-danger close_btn">关闭</a>
 							{else}

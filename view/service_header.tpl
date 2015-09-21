@@ -15,7 +15,7 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li class="active">
-                    <a href="/Admin/view_salary">
+                    <a href="/Service/index">
                         <span class="glyphicon glyphicon-home"></span>
                         查询薪资记录
                     </a>
@@ -25,7 +25,7 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <span class="glyphicon glyphicon-user"></span>
-                        {$s->ser_name}
+                        {$_s->ser_name}
                         <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">

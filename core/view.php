@@ -66,7 +66,7 @@ Flight::map('render', function($template, $data = array(), $isall = true){
 
 	}else{
 		header("Content-type: text/html; charset=utf-8"); 
-		Handle::result(404, "找不到模板{$template}", '../');
+		Handle::msg("找不到模板{$template}");
 	}
 	
 });

@@ -92,16 +92,16 @@ class User {
 				Session::init();
 	            Session::set('is_login', true);
 	            Session::set('is_admin', false);
-	            Session::set('ser_id', $res['ser_id']);
-	            Session::set('ser_name', $res['ser_name']);
-	            Session::set('ser_phone', $res['ser_phone']);
-	            Session::set('ser_email', $res['ser_email']);
+	            Session::set('ser_id', $res1['ser_id']);
+	            Session::set('ser_name', $res1['ser_name']);
+	            Session::set('ser_phone', $res1['ser_phone']);
+	            Session::set('ser_email', $res1['ser_email']);
 
 				Flight::json(array('success' => true, 'msg' => '登录成功', 'is_admin' => false));
 				die;
 			}
 
-			Flight::json(array('success' => true, 'msg' => '登录失败，请检查用户名密码'));
+			Flight::json(array('success' => false, 'msg' => '登录失败，请检查用户名密码'));
 			die;
 
 		}else{
@@ -122,6 +122,101 @@ class User {
 
 		Session::destroy();
 		Flight::redirect('user/login');
+
+	}
+
+	/**
+	 * 修改密码
+	 *
+	 * @return [type]     [description]
+	 * @author zhaozl
+	 * @since  2015-09-21
+	 */
+	public static function change_pwd() {
+
+		if(IS_POST) {
+			$data = Flight::request()->data;
+			$oldpwd = isset($data['oldpassword'])?md5($data['oldpassword']):'';
+			$pwd = isset($data['password'])?md5($data['password']):'';
+			$repwd = isset($data['repassword'])?md5($data['repassword']):'';
+
+			if($pwd != $repwd) {
+				Flight::json(array("success" => false, "message" => "新密码两次密码不匹配"));
+				die;
+			}
+			if(Session::get('is_admin')) {
+				if(!Flight::get('db')->has('admin', array("AND" => array("admin_id" => Session::get('admin_id'), "admin_pwd" => $oldpwd)))) {
+					Flight::json(array("success" => false, "message" => "旧密码不匹配"));
+					die;
+				}
+				$id = Flight::get('db')->update('admin', array("admin_pwd" => $pwd), array("admin_id" => Session::get('admin_id')));
+
+			}else{
+				if(!Flight::get('db')->has('services', array("AND" => array("ser_id" => Session::get('ser_id'), "ser_pwd" => $oldpwd)))) {
+					Flight::json(array("success" => false, "message" => "旧密码不匹配"));
+					die;
+				}
+
+				$id = Flight::get('db')->update('services', array("ser_pwd" => $pwd), array("ser_id" => Session::get('ser_id')));
+			}
+
+			if($id) {
+				Flight::json(array("success" => true, "message" => "修改成功"));
+			}else{
+				Flight::json(array("success" => false, "message" => "修改密码失败"));
+			}
+
+		}else{
+			Flight::jsrender('/public/js/user/change_pwd.js');
+			Flight::render('user/change_pwd');
+		}
+
+	}
+
+	/**
+	 * 修改密码
+	 *
+	 * @return [type]     [description]
+	 * @author zhaozl
+	 * @since  2015-09-21
+	 */
+	public static function change_info() {
+
+		if(IS_POST) {
+			$data = Flight::request()->data;
+			$email = isset($data['email'])?$data['email']:'';
+			$phone = isset($data['phone'])?$data['phone']:'';
+
+			if(Session::get('is_admin')) {
+
+				$id = Flight::get('db')->update('admin', array("admin_email" => $email, "admin_phone" => $phone), array("admin_id" => Session::get('admin_id')));
+
+			}else{
+
+				$id = Flight::get('db')->update('services', array("ser_email" => $email, "ser_phone" => $phone), array("ser_id" => Session::get('ser_id')));
+			}
+
+			if($id) {
+				Flight::json(array("success" => true, "message" => "修改成功"));
+			}else{
+				Flight::json(array("success" => false, "message" => "修改失败"));
+			}
+
+		}else{
+
+			if(Session::get('is_admin')) {
+				$data = Flight::get("db")->get("admin", array("admin_email", "admin_phone"), array("admin_id" => Session::get('admin_id')));
+
+				$res['email'] = $data['admin_email'];
+				$res['phone'] = $data['admin_phone'];
+			}else{
+				$data = Flight::get("db")->get("services", array("ser_email", "ser_phone"), array("ser_id" => Session::get('ser_id')));
+				$res['email'] = $data['ser_email'];
+				$res['phone'] = $data['ser_phone'];
+			}
+			Flight::jsrender('/public/js/user/change_info.js');
+			Flight::render('user/change_info', $res);
+		}
 
 	}
 
