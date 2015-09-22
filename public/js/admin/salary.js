@@ -8,7 +8,43 @@
 }(jQuery);
 
 $(document).ready(function() {
-	
+
+	function countCommission() {
+		var sell_money = Number($('#sell_money').val());
+		var sell_percent = Number($('#sell_percent').val());
+
+		$('#commission').val((sell_money*sell_percent).toFixed(2));
+	}
+
+	function countMoney() {
+		// 此处计算实发薪水
+		var basic_salary = Number($('#basic_salary').val());
+		var year_salary = Number($('#year_salary').val());
+		var store_money = Number($('#store_money').val());
+		var commission = Number($('#commission').val());
+		var absence_money = Number($('#absence_money').val());
+		var overtime_pay = Number($('#overtime_pay').val());
+		var per_bonus = Number($('#per_bonus').val());
+		var per_debit = Number($('#per_debit').val());
+		var income_tax = Number($('#income_tax').val());
+
+		var money = basic_salary+year_salary+store_money+commission-absence_money+overtime_pay+per_bonus-per_debit-income_tax;
+		$('#money').val(money.toFixed(2));
+
+	}
+
+	$('#sell_money, #sell_percent').keyup(function(event) {
+		countCommission();
+		countMoney();
+	});
+
+	$('#basic_salary, #year_salary, #store_money, #sell_money, #sell_percent, '+
+		'#commission, #absence_money, #overtime_pay, #per_bonus, #per_debit, #income_tax').keyup(function(event) {
+			countCommission();
+			countMoney();
+		});
+
+
 	$("#ser_id").select2({
 		placeholder: "请选择客服",
 		allowClear: true
@@ -17,6 +53,20 @@ $(document).ready(function() {
 			$(this).closest('.form-group').removeClass('has-error'); 
 			$('#ser_id-error').remove();
 		}
+
+		$.get('/admin/getwage', {ser_id: e.val}, function(data) {
+			if(data) {
+				$('#basic_salary').val(data.ser_basic);
+				$('#ser_name').val(data.ser_name);
+				$('#ser_num').val(data.ser_num);
+				$('#sell_percent').val(data.ser_percent);
+				$('#year_salary').val(data.ser_year);
+				$('#store_money').val(data.ser_store);
+
+				countCommission();
+				countMoney();
+			}
+		}, 'json');
 	});;
 
 	$('#datepicker').datepicker({
@@ -36,21 +86,75 @@ $(document).ready(function() {
 			ser_id: {
 				required: true
 			},
-			money: {
-				number:true,
+			basic_salary: {
 				required: true,
+				number:true,
+				min: 0
+			},
+			year_salary: {
+				required: true,
+				number:true,
+				min: 0
+			},
+			store_money: {
+				required: true,
+				number:true,
+				min: 0
+			},
+			sell_money: {
+				required: true,
+				number:true,
+				min: 0
+			},
+			sell_percent: {
+				required: true,
+				number:true,
+				max: 1,
+				min: 0
+			},
+			commission: {
+				required: true,
+				number:true,
+				min: 0
+			},
+			absence_money: {
+				required: true,
+				number:true,
+				min: 0
+			},
+			overtime_pay: {
+				required: true,
+				number:true,
+				min: 0
+			},
+			per_bonus: {
+				required: true,
+				number:true,
+				min: 0
+			},
+			per_debit: {
+				required: true,
+				number:true,
+				min: 0
+			},
+			income_tax: {
+				required: true,
+				number:true,
+				min: 0
+			},
+			money: {
+				required: true,
+				number:true,
 				min: 0
 			},
 			start_date: "required",
 			end_date: "required",
-			detail: "required",
+			attendance: "required",
+			detail: "required"
 		},
 		messages: {
 			ser_id: {
 				required: "请选择客服"
-			},
-			money: {
-				required: "请填写薪资金额"
 			},
 			start_date: {
 				required: "请选择开始时间"
@@ -77,7 +181,7 @@ $(document).ready(function() {
         	if(element.attr('id') == 'start_date' || element.attr('id') == 'end_date' ) {
         		element.parent('div').after(error);
         	}else{
-        		element.parent('div.col-sm-6').append(error); 
+        		element.after(error);
         	}
         },  
         submitHandler : function(form) {  
@@ -93,19 +197,53 @@ $(document).ready(function() {
 		showRefresh: true,
 		detailView: true,
 		pageSize: 10,
-		toolbar: "<div class='text-muted'>点击‘+’查看薪资说明</div>",
+		toolbar: "<div class='text-muted'>点击‘+’查看其他选项</div>",
 		detailFormatter: function(index, row) {
-			return '<b>薪资发放说明：</b> '+row.detail;
+			return '<b>销售额 ：</b> '+ row.sell_money+
+			'<br /><b>提成比例：</b> '+ row.sell_percent+
+			'<br /><b>考勤情况：</b> '+ row.attendance+
+			'<br /><b>薪资说明：</b> '+row.detail;
 		},
 	    columns: [{
 	        field: 'add_time',
 	        title: '发薪时间'
 	    }, {
+	        field: 'ser_num',
+	        title: '编号'
+	    },{
 	        field: 'ser_name',
 	        title: '客服人员'
 	    }, {
+	        field: 'basic_salary',
+	        title: '底薪'
+	    }, {
+	        field: 'year_salary',
+	        title: '工龄工资'
+	    }, {
+	        field: 'store_money',
+	        title: '店铺'
+	    }, {
+	        field: 'commission',
+	        title: '提成'
+	    }, {
+	        field: 'absence_money',
+	        title: '请假扣款'
+	    }, {
+	        field: 'overtime_pay',
+	        title: '加班费'
+	    }, {
+	        field: 'per_bonus',
+	        title: '绩效奖金'
+	    }, {
+	        field: 'per_debit',
+	        title: '绩效扣款'
+	    }, {
+	        field: 'income_tax',
+	        title: '个税'
+	    }, {
 	        field: 'money',
-	        title: '薪资金额'
+	        title: '实发薪资',
+	        class: 'text-success'
 	    }, {
 	        field: 'start_date',
 	        title: '计薪开始时间'
@@ -151,19 +289,12 @@ $(document).ready(function() {
 
 	$('#save_btn').click(function(event) {
 		if($('form').valid()) {
-
 			bootbox.confirm('<b><span class="text-danger">提交之后不能更改, 请核实填写数据！ 确认提交吗？</span></b>', function(result) {
 				if(result) {
 					$('body').mask({
 		                spinner: { lines: 10, length: 5, width: 3, radius: 10}
 		            });
-					$.post('/admin/save_wages', {
-						ser_id : $('#ser_id').val(),
-						money : $('#money').val(),
-						start_date : $('#start_date').val(),
-						end_date : $('#end_date').val(),
-						detail : $('#detail').val()
-					}, function(data, textStatus, xhr) {
+					$.post('/admin/save_wages', $('form').serialize(), function(data, textStatus, xhr) {
 						$('body').unmask();
 		                if(data.success) {
 		                    $('form')[0].reset();

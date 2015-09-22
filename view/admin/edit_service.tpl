@@ -9,18 +9,62 @@
 			</ol>
 		</div>
 		<div class="col-sm-12">
-			<form>
+			<form class="form-horizontal">
 				<input type="hidden" id="ser_id" name="ser_id" value="{$ser_id}" />
 				<div class="form-group">
-					<label for="ser_name"><font color="red">*</font> 客服姓名</label>
-					<input type="text" class="form-control" id="ser_name" name="ser_name" value="{$ser_name}" placeholder="客服姓名"></div>
+					<label for="ser_num" class="col-sm-2 control-label"><font color="red">*</font> 客服编号</label>
+					<div class="col-sm-6">
+						<input type="text" class="form-control" id="ser_num" name="ser_num" value="{$ser_num}" placeholder="客服编号">
+					</div>
+				</div>
 				<div class="form-group">
-					<label for="ser_phone"><font color="red">*</font> 手机号码</label>
-					<input type="tel" class="form-control" id="ser_phone" name="ser_phone" value="{$ser_phone}" placeholder="手机号码"></div>
+					<label for="ser_name" class="col-sm-2 control-label"><font color="red">*</font> 客服姓名</label>
+					<div class="col-sm-6">
+						<input type="text" class="form-control" id="ser_name" name="ser_name" value="{$ser_name}" placeholder="客服姓名">
+					</div>
+				</div>
 				<div class="form-group">
-					<label for="ser_email">邮箱</label>
-					<input type="tel" class="form-control" id="ser_email" name="ser_email" value="{$ser_email}" placeholder="邮箱"></div>
-				<a href="javascript:void(0);" class="btn btn-primary" id="save_btn">提交</a>
+					<label for="ser_phone" class="col-sm-2 control-label"><font color="red">*</font> 手机号码</label>
+					<div class="col-sm-6">
+						<input type="tel" class="form-control" id="ser_phone" name="ser_phone" value="{$ser_phone}" placeholder="手机号码">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="ser_email" class="col-sm-2 control-label">邮箱</label>
+					<div class="col-sm-6">
+						<input type="email" class="form-control" id="ser_email" name="ser_email" value="{$ser_email}" placeholder="邮箱">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="ser_basic" class="col-sm-2 control-label">底薪</label>
+					<div class="col-sm-6">
+						<input type="text" class="form-control" id="ser_basic" name="ser_basic" value="{$ser_basic}" placeholder="底薪">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="ser_year" class="col-sm-2 control-label">工龄工资</label>
+					<div class="col-sm-6">
+						<input type="text" class="form-control" id="ser_year" name="ser_year" value="{$ser_year}" placeholder="工龄工资">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="ser_store" class="col-sm-2 control-label">店铺工资</label>
+					<div class="col-sm-6">
+						<input type="text" class="form-control" id="ser_store" name="ser_store" value="{ser_store}" placeholder="店铺工资">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="ser_percent" class="col-sm-2 control-label">提成比例</label>
+					<div class="col-sm-6">
+						<input type="text" class="form-control" id="ser_percent" name="ser_percent" value="{$ser_percent}" placeholder="提成比例">
+						<span class="text-muted">(如: 0.05)</span>
+					</div>
+				</div>
+				<div class="form-group">
+				    <div class="col-sm-offset-2 col-sm-10">
+						<a href="javascript:void(0);" class="btn btn-primary" id="save_btn">提交</a>
+				    </div>
+			    </div>
 			</form>
 		</div>
 	</div>

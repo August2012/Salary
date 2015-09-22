@@ -15,6 +15,7 @@ class Admin {
 			foreach ($data as $key => $value) {
 				$value['ser_time'] = date('Y-m-d', $value['ser_join']);
 				$value['ser_use'] = $value['is_use'] == 1?'启用':'未启用';
+				$value['ser_per'] = $value['ser_percent']*100;
 
 				$res[] = $value;
 			}
@@ -31,6 +32,10 @@ class Admin {
 			$ser_name = isset($data['ser_name'])?trim($data['ser_name']):'';
 			$ser_phone = isset($data['ser_phone'])?trim($data['ser_phone']):'';
 			$ser_email = isset($data['ser_email'])?trim($data['ser_email']):'';
+			$ser_num = isset($data['ser_num'])?trim($data['ser_num']):'';
+			$ser_basic = isset($data['ser_basic'])?trim($data['ser_basic']):'';
+			$ser_year = isset($data['ser_year'])?trim($data['ser_year']):'';
+			$ser_percent = isset($data['ser_percent'])?trim($data['ser_percent']):'';
 
 			if(!$ser_name) {
 				Flight::json(array('success' => false, 'message' => '缺少客服名'));
@@ -39,6 +44,26 @@ class Admin {
 
 			if(!$ser_phone) {
 				Flight::json(array('success' => false, 'message' => '缺少客服手机号码'));
+				die;
+			}
+
+			if(!$ser_num) {
+				Flight::json(array('success' => false, 'message' => '缺少客服编号'));
+				die;
+			}
+
+			if(!$ser_basic) {
+				Flight::json(array('success' => false, 'message' => '缺少客服底薪'));
+				die;
+			}
+
+			if(!$ser_year) {
+				Flight::json(array('success' => false, 'message' => '缺少客服工龄工资'));
+				die;
+			}
+
+			if(!$ser_percent) {
+				Flight::json(array('success' => false, 'message' => '缺少客服提成比例'));
 				die;
 			}
 
@@ -59,6 +84,10 @@ class Admin {
 				"ser_phone" => $ser_phone,
 				"ser_pwd" => md5('password'),
 				"ser_email" => $ser_email,
+				"ser_num" => $ser_num,
+				"ser_basic" => $ser_basic,
+				"ser_year" => $ser_year,
+				"ser_percent" => $ser_percent,
 				"ser_join" => time(),
 				"is_use" => 1,
 			));
@@ -89,6 +118,10 @@ class Admin {
 			$ser_name = isset($data['ser_name'])?trim($data['ser_name']):'';
 			$ser_phone = isset($data['ser_phone'])?trim($data['ser_phone']):'';
 			$ser_email = isset($data['ser_email'])?trim($data['ser_email']):'';
+			$ser_num = isset($data['ser_num'])?trim($data['ser_num']):'';
+			$ser_basic = isset($data['ser_basic'])?trim($data['ser_basic']):'';
+			$ser_year = isset($data['ser_year'])?trim($data['ser_year']):'';
+			$ser_percent = isset($data['ser_percent'])?trim($data['ser_percent']):'';
 
 			if(!$ser_id) {
 				Flight::json(array('success' => false, 'message' => '找不到客服'));
@@ -102,6 +135,26 @@ class Admin {
 
 			if(!$ser_phone) {
 				Flight::json(array('success' => false, 'message' => '缺少客服手机号码'));
+				die;
+			}
+
+			if(!$ser_num) {
+				Flight::json(array('success' => false, 'message' => '缺少客服编号'));
+				die;
+			}
+
+			if(!$ser_basic) {
+				Flight::json(array('success' => false, 'message' => '缺少客服底薪'));
+				die;
+			}
+
+			if(!$ser_year) {
+				Flight::json(array('success' => false, 'message' => '缺少客服工龄工资'));
+				die;
+			}
+
+			if(!$ser_percent) {
+				Flight::json(array('success' => false, 'message' => '缺少客服提成比例'));
 				die;
 			}
 
@@ -121,8 +174,10 @@ class Admin {
 				"ser_name" => $ser_name,
 				"ser_phone" => $ser_phone,
 				"ser_email" => $ser_email,
-				"ser_join" => time(),
-				"is_use" => 1,
+				"ser_num" => $ser_num,
+				"ser_basic" => $ser_basic,
+				"ser_year" => $ser_year,
+				"ser_percent" => $ser_percent
 			), array("ser_id" => $ser_id));
 
 			if($ser_res) {
@@ -143,7 +198,6 @@ class Admin {
 	}
 
 	public static function salary() {
-
 		
 		Flight::cssrender("/public/js/select2/select2.css");
 		Flight::cssrender("/public/js/select2/select2-bootstrap.css");
@@ -157,11 +211,11 @@ class Admin {
 		Flight::jsrender("/public/js/admin/salary.js");
 
 		$db = Flight::get('db');
-		$sers = $db->select("services", array("ser_id", "ser_name"), array("is_use" => 1));
+		$sers = $db->select("services", array("ser_id", "ser_name", "ser_num"), array("is_use" => 1));
 		if($sers) {
 			$res = array();
 			foreach ($sers as $key => $value) {
-				$res[$value['ser_id']] = $value['ser_name'];
+				$res[$value['ser_id']] = '【'.$value['ser_num'].'】 '.$value['ser_name'];
 			}
 			Flight::render("admin/salary", array("sers" => $res));
 		}else{
@@ -203,38 +257,41 @@ class Admin {
 	public static function save_wages() {
 		$data = Flight::request()->data;
 		$ser_id = isset($data['ser_id'])?$data['ser_id']:'';
-		$money = isset($data['money'])?$data['money']:'';
+		$ser_name = isset($data['ser_name'])?$data['ser_name']:'';
+		$ser_num = isset($data['ser_num'])?$data['ser_num']:'';
 		$start_date = isset($data['start_date'])?$data['start_date']:'';
 		$end_date = isset($data['end_date'])?$data['end_date']:'';
+		$basic_salary = isset($data['basic_salary'])?$data['basic_salary']:0;
+		$year_salary = isset($data['year_salary'])?$data['year_salary']:0;
+		$store_money = isset($data['store_money'])?$data['store_money']:0;
+		$sell_money = isset($data['sell_money'])?$data['sell_money']:0;
+		$sell_percent = isset($data['sell_percent'])?$data['sell_percent']:0;
+		$commission = isset($data['commission'])?$data['commission']:0;
+		$absence_money = isset($data['absence_money'])?$data['absence_money']:0;
+		$overtime_pay = isset($data['overtime_pay'])?$data['overtime_pay']:0;
+		$per_bonus = isset($data['per_bonus'])?$data['per_bonus']:0;
+		$per_debit = isset($data['per_debit'])?$data['per_debit']:0;
+		$income_tax = isset($data['income_tax'])?$data['income_tax']:0;
+		$money = isset($data['money'])?$data['money']:0;
+		$attendance = isset($data['attendance'])?$data['attendance']:'';
 		$detail = isset($data['detail'])?$data['detail']:'';
-
-		if(!$ser_id) {
-			Flight::json(array("success" => false, "message" => "缺少客服人员，请选择客服"));
-			die;
-		}
-
-		if(!$money) {
-			Flight::json(array("success" => false, "message" => "未获取到薪资，请填写薪资"));
-			die;
-		}
-
-		if(!$start_date) {
-			Flight::json(array("success" => false, "message" => "未获取到开始时间，请填写开始时间"));
-			die;
-		}
-
-		if(!$end_date) {
-			Flight::json(array("success" => false, "message" => "未获取到结束时间，请填写结束时间"));
-			die;
-		}
-
-		if(!$detail) {
-			Flight::json(array("success" => false, "message" => "未获取到薪资结构描述，请填写薪资结构描述"));
-			die;
-		}
 
 		$data = array(
 			'ser_id' => $ser_id,
+			'ser_name' => $ser_name,
+			'ser_num' => $ser_num,
+			'basic_salary' => $basic_salary,
+			'year_salary' => $year_salary,
+			'store_money' => $store_money,
+			'sell_money' => $sell_money,
+			'sell_percent' => $sell_percent,
+			'commission' => $commission,
+			'absence_money' => $absence_money,
+			'overtime_pay' => $overtime_pay,
+			'per_bonus' => $per_bonus,
+			'per_debit' => $per_debit,
+			'income_tax' => $income_tax,
+			'attendance' => $attendance,
 			'money' => $money,
 			'start_date' => $start_date,
 			'end_date' => $end_date,
@@ -413,7 +470,7 @@ class Admin {
 	 */
 	public static function del_admin() {
 		$req = Flight::request()->data;
-		$admin_id = ($req['admin_id'])?$req['admin_id']:'';
+		$admin_id = isset($req['admin_id'])?$req['admin_id']:'';
 
 		if(Flight::get('db')->delete('admin', array("admin_id" => $admin_id))) {
 			Flight::json(array("success" => true, "message" => "删除成功"));
@@ -422,5 +479,24 @@ class Admin {
 		}
 	}
 
+	/**
+	 * 获取薪资
+	 *
+	 * @return [type]     [description]
+	 * @author zhaozl
+	 * @since  2015-09-21
+	 */
+	public static function getwage() {
+		$req = Flight::request()->query;
+		$ser_id = isset($req['ser_id'])?$req['ser_id']:'';
+
+		if($ser_id) {
+			$data = Flight::get('db')->get("services", array("ser_id", "ser_name", "ser_num", 
+				"ser_basic", "ser_year", "ser_store", "ser_percent",), array("ser_id" => $ser_id));
+
+			Flight::json($data);
+		}
+
+	}
 
 }

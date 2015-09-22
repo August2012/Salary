@@ -12,6 +12,9 @@
 						<th>客服姓名</th>
 						<th>手机号码</th>
 						<th>邮箱地址</th>
+						<th>底薪</th>
+						<th>工龄工资</th>
+						<th>提成比例%</th>
 						<th>添加时间</th>
 						<th>状态</th>
 						<th>操作</th>
@@ -23,6 +26,9 @@
 						<td>{$item.ser_name}</td>
 						<td>{$item.ser_phone}</td>
 						<td>{$item.ser_email}</td>
+						<td>{$item.ser_basic}</td>
+						<td>{$item.ser_year}</td>
+						<td>{$item.ser_per}%</td>
 						<td>{$item.ser_time}</td>
 						<td>
 							{if $item.is_use eq 1}

@@ -3,17 +3,42 @@ $(document).ready(function() {
 		errorElement : 'span',  
         errorClass : 'help-block',
 		rules: {
-			ser_name: "required",
-			ser_phone: "required",
-		},
-		messages: {
-			ser_name: {
-				required: "请填写客服姓名",
-			},
-			ser_phone: {
-				required: "请填写客服手机号码",
-			}
-		},
+            ser_name: "required",
+            ser_phone: "required",
+            ser_num: {
+                digits: true,
+                required: true
+            },
+            ser_basic: {
+                number: true
+            },
+            ser_year: {
+                number: true
+            },
+            ser_percent: {
+                number: true
+            }
+        },
+        messages: {
+            ser_name: {
+                required: "请填写客服姓名"
+            },
+            ser_phone: {
+                required: "请填写客服手机号码"
+            },
+            ser_num: {
+                digits: "编号必须是数字"
+            },
+            ser_basic: {
+                number: "请输入数字"
+            },
+            ser_year: {
+                number: "请输入数字"
+            },
+            ser_percent: {
+                number: "请输入数字"
+            }
+        },
 		highlight : function(element) {  
             $(element).closest('.form-group').addClass('has-error');  
         },  

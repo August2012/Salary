@@ -41,7 +41,7 @@
                         <div class="remember-forgot">
                             <div class="row">
                                 <div class="col-md-12  text-right">
-                                    <a href="javascript:void(0);" class="forgot-pass" id="forget_btn">忘记密码</a>
+                                    <!-- <a href="javascript:void(0);" class="forgot-pass" id="forget_btn">忘记密码</a> -->
                                 </div>
                             </div>
                         </div>

@@ -188,11 +188,19 @@ class User {
 			$phone = isset($data['phone'])?$data['phone']:'';
 
 			if(Session::get('is_admin')) {
+				if(Flight::get('db')->has('admin', array("AND" => array('admin_phone' => $phone, "admin_id[!]" => Session::get('admin_id'))))) {
+					Flight::json(array("success" => false, "message" => "此手机号码已经被别人使用"));
+					die;
+				}
 
 				$id = Flight::get('db')->update('admin', array("admin_email" => $email, "admin_phone" => $phone), array("admin_id" => Session::get('admin_id')));
 
 			}else{
-
+				if(Flight::get('db')->has('services', array("AND" => array('ser_phone' => $phone, "ser_id[!]" => Session::get('ser_id'))))) {
+					Flight::json(array("success" => false, "message" => "此手机号码已经被别人使用"));
+					die;
+				}
+				
 				$id = Flight::get('db')->update('services', array("ser_email" => $email, "ser_phone" => $phone), array("ser_id" => Session::get('ser_id')));
 			}
 
